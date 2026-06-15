@@ -263,12 +263,12 @@ async function sendMessage() {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let botMessage = '';
-        const botMessageId = addMessage('', 'bot');
+        const botMessageId = addMessage('...', 'bot');
 
         while (true) {
             const { done, value } = await reader.read();
             if (done) break;
-            const chunk = decoder.decode(value);
+            const chunk = decoder.decode(value, { stream: true });
             const lines = chunk.split('\n').filter(line => line.trim() !== '');
             for (const line of lines) {
                 if (line.startsWith('data: ')) {
@@ -278,31 +278,30 @@ async function sendMessage() {
                             conversationId = data.conversation_id;
                             saveToStorage();
                         }
-                        // Chatbot 模式：直接回答
+                        // Chatbot 模式：event: message 带 answer 字段
                         if (data.answer) {
                             botMessage += data.answer;
                             updateMessage(botMessageId, botMessage);
                         }
-                        // Workflow 模式：完成时取 outputs.text
+                        // Workflow 完成
                         if (data.event === 'workflow_finished') {
-                            const outputs = data.data?.outputs || {};
-                            const result = outputs.text || outputs.answer || outputs.output || '';
-                            if (result) {
-                                botMessage = result;
-                                updateMessage(botMessageId, botMessage);
-                            } else if (data.data?.status === 'failed') {
-                                botMessage = '抱歉，AI 处理出错了：' + (data.data?.error || '未知错误');
-                                updateMessage(botMessageId, botMessage);
+                            if (data.data?.status === 'failed') {
+                                if (!botMessage) {
+                                    botMessage = '抱歉，AI 处理出错了：' + (data.data?.error || '未知错误');
+                                    updateMessage(botMessageId, botMessage);
+                                }
                             }
                         }
-                        // Workflow 中 LLM 节点的文本 delta
-                        if (data.event === 'text_chunk' && data.data?.text) {
-                            botMessage += data.data.text;
-                            updateMessage(botMessageId, botMessage);
-                        }
-                    } catch (e) {}
+                    } catch (e) {
+                        console.error('[Parse Error]', e, line);
+                    }
                 }
             }
+        }
+
+        // 如果流式结束没收到内容
+        if (!botMessage) {
+            updateMessage(botMessageId, '抱歉，没有收到回复，请重试~');
         }
 
         // 机器人回复完毕后保存
