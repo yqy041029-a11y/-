@@ -70,6 +70,8 @@ app.post('/api/chat', async (req, res) => {
             headers: {
                 'Authorization': `Bearer ${DIFY_API_KEY}`,
                 'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true',
+                'User-Agent': 'PetChatbot/1.0',
             },
             body: JSON.stringify(difyBody),
         });
@@ -127,6 +129,8 @@ app.post('/api/file-upload', async (req, res) => {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${DIFY_API_KEY}`,
+                'ngrok-skip-browser-warning': 'true',
+                'User-Agent': 'PetChatbot/1.0',
             },
             body: formData,
         });
