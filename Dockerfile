@@ -6,9 +6,8 @@ WORKDIR /app
 COPY server/package.json server/package-lock.json ./
 RUN npm ci --production
 
-# 拷贝服务端
+# 拷贝服务端（.env 不走镜像，密钥用 Railway 环境变量注入）
 COPY server/server.js ./
-COPY server/.env ./
 
 # 拷贝前端静态文件
 COPY index.html style.css script.js ./
