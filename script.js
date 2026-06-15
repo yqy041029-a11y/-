@@ -278,8 +278,26 @@ async function sendMessage() {
                             conversationId = data.conversation_id;
                             saveToStorage();
                         }
+                        // Chatbot 模式：直接回答
                         if (data.answer) {
                             botMessage += data.answer;
+                            updateMessage(botMessageId, botMessage);
+                        }
+                        // Workflow 模式：完成时取 outputs.text
+                        if (data.event === 'workflow_finished') {
+                            const outputs = data.data?.outputs || {};
+                            const result = outputs.text || outputs.answer || outputs.output || '';
+                            if (result) {
+                                botMessage = result;
+                                updateMessage(botMessageId, botMessage);
+                            } else if (data.data?.status === 'failed') {
+                                botMessage = '抱歉，AI 处理出错了：' + (data.data?.error || '未知错误');
+                                updateMessage(botMessageId, botMessage);
+                            }
+                        }
+                        // Workflow 中 LLM 节点的文本 delta
+                        if (data.event === 'text_chunk' && data.data?.text) {
+                            botMessage += data.data.text;
                             updateMessage(botMessageId, botMessage);
                         }
                     } catch (e) {}
