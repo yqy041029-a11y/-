@@ -1,0 +1,13 @@
+{
+  "name": "pet-chatbot",
+  "version": "1.0.0",
+  "description": "🐾 宠物智能顾问 - 基于 Dify 的 AI 宠物喂养护理助手",
+  "scripts": {
+    "install": "cd server && npm install",
+    "start": "cd server && npm start",
+    "dev": "cd server && npm run dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

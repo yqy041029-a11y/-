@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🐾 宠物智能顾问 - 科学养宠 AI 助手</title>
+
+    <!-- SEO -->
+    <meta name="description" content="宠物智能顾问，基于 AI 的猫咪和狗狗喂养、护理、疾病咨询助手。科学养宠，随时解答你的猫狗问题。">
+    <meta name="keywords" content="宠物顾问,猫咪,狗狗,养宠,宠物健康,AI咨询,宠物护理,驱虫,喂养">
+    <meta name="author" content="Pet Chatbot">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="🐾 宠物智能顾问 - 科学养宠 AI 助手">
+    <meta property="og:description" content="基于 AI 的宠物喂养、护理、疾病咨询助手，随时解答你的猫狗问题。">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:site_name" content="宠物智能顾问">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="🐾 宠物智能顾问">
+    <meta name="twitter:description" content="AI 宠物喂养护理咨询助手">
+
+    <!-- Favicon (emoji SVG) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="main-layout">
+    <div class="chat-container">
+        <!-- 聊天框内浮动爪印装饰 -->
+        <div class="paw-decor">🐾</div>
+        <div class="paw-decor">🐾</div>
+        <!-- 头部 -->
+        <div class="chat-header">
+            <div class="header-icon">🐾</div>
+            <div class="header-text">
+                <h1>宠物智能顾问</h1>
+                <p>科学养宠，随时解答你的猫狗问题</p>
+            </div>
+            <button class="new-chat-btn" id="newChatBtn" title="新建对话">
+                <i class="fas fa-plus"></i>
+                <span>新对话</span>
+            </button>
+        </div>
+
+        <!-- 快捷问题区 -->
+        <div class="quick-questions">
+            <button class="quick-btn" data-question="猫咪多久驱虫一次？">猫咪多久驱虫一次？</button>
+            <button class="quick-btn" data-question="狗狗拉稀是什么原因？">狗狗拉稀是什么原因？</button>
+            <button class="quick-btn" data-question="猫咪怎么喂才健康？">猫咪怎么喂才健康？</button>
+        </div>
+
+        <!-- 聊天内容区 -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                <div class="avatar bot-avatar">🐱</div>
+                <div class="message-content">
+                    你好！我是你的专属宠物智能顾问，有任何猫狗喂养、护理、疾病问题都可以问我~
+                </div>
+            </div>
+        </div>
+
+        <!-- 已上传文件展示区 -->
+        <div class="upload-file-show" id="uploadFileShow"></div>
+
+        <!-- 输入区 + 上传按钮 -->
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="输入你的问题，也可上传文档咨询">
+            <!-- 上传文档按钮 -->
+            <button class="upload-btn" id="uploadBtn" title="上传文档">
+                <i class="fas fa-file-upload"></i>
+            </button>
+            <!-- 隐藏原生文件选择 -->
+            <input type="file" id="fileInput" accept=".txt,.pdf,.docx,.doc,.md" hidden>
+            <!-- 发送按钮 -->
+            <button id="sendBtn" class="send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 提问记录面板 -->
+    <div class="question-history" id="questionHistory">
+        <div class="history-header">
+            <i class="fas fa-history"></i>
+            <span>提问记录</span>
+        </div>
+        <div class="history-list" id="historyList">
+            <div class="history-empty">还没有提问~</div>
+        </div>
+    </div>
+    </div><!-- .main-layout -->
+
+    <!-- 文档上传弹窗 -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-box">
+            <div class="modal-title">
+                <h3>上传文档</h3>
+                <span class="close-modal" id="closeModal"><i class="fas fa-times"></i></span>
+            </div>
+            <div class="drop-area" id="dropArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>点击选择文件 或 将文件拖拽到此区域</p>
+                <p class="tip">支持 TXT / PDF / DOC / DOCX / MD</p>
+            </div>
+            <div class="modal-btn">
+                <button class="cancel-btn" id="cancelUpload">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
